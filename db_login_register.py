@@ -3,7 +3,7 @@ import re
 
 #Database: user_info: Stores tables related to user information
                 #Table: user_login: stores login information
-                    # (user_id int unique auto increement, username varchar primary key unique, Full_name varchar not null, user_pass varchar not null, security_qns varchar not null, security_qns_ans varchar not null)
+                    # (user_id int unique auto increement, username varchar primary key unique, Full_name varchar not null, user_pass varchar not null, email varchar not null, security_qns varchar not null, security_qns_ans varchar not null)
 
 
 #Login information given by the user which has to be first validated for any noise and then checked if present in db
@@ -54,11 +54,12 @@ class Login:
 #-----------------------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------------------
 class Register:
-    def __init__(self, d, username, Full_name, user_pass, security_qns, security_qns_ans):
+    def __init__(self, d, username, Full_name, user_pass, email, security_qns, security_qns_ans):
 
         self.username = username
         self.Full_name = Full_name
         self.user_pass = user_pass
+        self.email = email
         self.security_qns = security_qns
         self.security_qns_ans = security_qns_ans
         self.flag = all([self.text_validate(self.username), self.text_validate(self.Full_name), self.text_validate(self.user_pass),self.text_validate(self.security_qns_ans)])
@@ -77,7 +78,7 @@ class Register:
 
         if self.flag:
 
-            query = "INSERT INTO `user_info`.`user_login` (`username`, `Full_name`, `user_pass`, `security_qns`, `security_qns_ans`) VALUES ('{}', '{}', '{}', '{}', '{}');".format(self.username, self.Full_name, self.user_pass, self.security_qns, self.security_qns_ans)
+            query = "INSERT INTO `user_info`.`user_login` (`username`, `Full_name`, `user_pass`, `security_qns`, `security_qns_ans`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}');".format(self.username, self.Full_name, self.user_pass, self.email, self.security_qns, self.security_qns_ans)
             result = d.execute(query)
             return result
 
