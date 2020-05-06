@@ -46,9 +46,9 @@ class Server_Mail:
 
 """
 #Driver Code
-fromaddr = 'coderssvartak@gmail.com'
-password = 'Vartak@213'
-toaddrs = 'sahilravu213@gmail.com'
+fromaddr = ''
+password = ''
+toaddrs = ''
 subject = "Test Mail2"
 content = "This is a server sent mail."
 mail = Server_Mail(fromaddr, toaddrs, subject, content, password)
