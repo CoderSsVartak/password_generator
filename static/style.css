@@ -77,52 +77,65 @@ ul li a:hover{
 	color: #000;
 }
 .form-box{
-	height:650px;
+	height:500px;
 	width: 400px;
 	position:absolute;
-	top: 20%;
-	left:35%;
+	top: 30%;
+	left:32%;
 	/* border:2px solid #000; */
 	margin: 3% auto;
-	/* background: linear-gradient(to top, #defaf9, #b7f6f7); */
-	padding: 10px;
+	background: linear-gradient(to right, #f7f7f5, #b3b3b1); 
+	padding: 2% 2% 5% 5%;
+	overflow:hidden;
 }
 .form-box h1{
 	float: left;
-	font-size: 30px;
+	font-size: 40px;
 	border-bottom: 3px solid;
-	margin-bottom: 50px;
+	margin-bottom: 40px;
 	padding: 13px 0;
-	color: white;
+	color:blue;
 }
 .form-box1{
 	height:280px;
 	width: 400px;
 	position:absolute;
-	top: 20%;
-	left:35%;
-	/* border:2px solid #000; */
+	top: 30%;
+	left:32%;
+	/*border:2px solid #000;*/
 	margin: 3% auto;
-	/* background: linear-gradient(to top, #defaf9, #b7f6f7); */
-	padding: 10px;
+	background: linear-gradient(to right, #f7f7f5, #b3b3b1);
+	padding: 2% 2% 5% 5%;
+}
+.form-box1 .btn1:hover{
+	background: linear-gradient(to right,  #d9d9d9, #adacac);
+	border:none;
+	transition: 0.1s ease-in;
+	box-shadow: 5px 5px gray;
 }
 .form-box1 h1{
 	float: left;
 	font-size: 40px;
 	border-bottom: 3px solid;
-	margin-bottom: 50px;
+	margin-bottom: 40px;
 	padding: 13px 0;
-	color: white;
-} 
-.form-box btn1{
+	color:blue;
+}
+.form-box .btn1{
 	width: 80%;
-	background: none;
-	border: 2px solid #999;
-	color: black;
-	padding: 5px;
+	background:none;
+	border: 2px solid gray;
+	color: blue;
+	padding: 10px;
 	font-size: 18px;
 	cursor: pointer;
-	margin: 12px 0;
+	margin: 20px 0;
+}
+.form-box .btn1:hover{
+	background: linear-gradient(to right,  #d9d9d9, #adacac);
+	border:none;
+	transition: 0.1s ease-in;
+	box-shadow: 5px 5px gray;
 }
 .textbox{
 	width: 80%;
@@ -136,21 +149,24 @@ ul li a:hover{
 	border: none;
 	outline: none;
 	background: none;
-	color: white;
+	color: black;
 	font-size: 18px;
 	width: 80%;
 	float: left;
-	margin: 0 10px;
+	margin: 5px 10px;
+}
+.textbox input::placeholder{
+	color:blue;
 }
 .btn1{
 	width: 80%;
 	background: none;
 	border: 2px solid #999;
-	color: white;
-	padding: 5px;
+	color: blue;
+	padding: 10px;
 	font-size: 18px;
 	cursor: pointer;
-	margin: 12px 0;
+	margin: 30px 0;
 }
 .form-box2{
 	height:400px;
@@ -160,7 +176,7 @@ ul li a:hover{
 	left:5%;
 	/* border:2px solid #000; */
 	margin: 3% auto;
-	background: white; /* linear-gradient(to top, #defaf9, #b7f6f7) */
+	background: linear-gradient(to right,  #d9d9d9, #adacac);
 	padding: 10px;
 	display: -webkit-box;
 	display: flex;
@@ -204,6 +220,9 @@ ul li a:hover{
 	padding-left: 25px;
 	padding-right: 25px;
 }
+.grid a:visited{
+	color: blue;
+}
 .card{
 	position: relative;
 	display: -webkit-box;
@@ -222,8 +241,16 @@ ul li a:hover{
 	box-shadow:0 2px 15px 0px rgba(0,0,0,0.2);
 	text-decoration: none;
 }
+.card:hover{
+	background: linear-gradient(to right, #f7f7f5, #e3e3e1);
+	transition: 1s ease;
+	transition: 0.2s ease-in;
+	box-shadow: 10px 10px gray;
+}
+
 .card:hover .overlay{
 	opacity: 1;
+
 }
 .number{
 	z-index: 6;
@@ -254,6 +281,7 @@ ul li a:hover{
 }
 .page-title{
 	font-weight: bold;
+	font-size:150%;
 	color: #FF2C55;
 	width: 600px;
 	position:absolute;
