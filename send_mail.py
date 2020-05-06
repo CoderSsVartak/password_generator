@@ -56,11 +56,11 @@ class Send_Mail:
 """
 #Driver Code
 #OTP
-sent = Send_Mail("sahilravu213@gmail.com", "otp")
+sent = Send_Mail("", "otp")
 
 #Registration
-sent = Send_Mail("sahilravu213@gmail.com", "register", username="CoderSsVartak")
+sent = Send_Mail("", "register", username="")
 
 #Reminder
-sent = Send_Mail("sahilravu213@gmail.com", "register", account_name="Instagram")
+sent = Send_Mail("", "register", account_name="")
 """
