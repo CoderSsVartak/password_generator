@@ -6,7 +6,7 @@ class Database:
 
         self.hostname="localhost"
         self.username="root"
-        self.dbpasswd=""
+        self.dbpasswd="vartak@213"
         self.port="3306"
         
     #Connect to the database and tackle all the errors raised

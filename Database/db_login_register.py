@@ -1,4 +1,4 @@
-from database import Database
+from .database import Database
 import re
 
 #Database: user_info: Stores tables related to user information
