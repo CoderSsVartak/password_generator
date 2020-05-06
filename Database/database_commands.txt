@@ -1,0 +1,18 @@
+#---------------------------------------------------------------------------------------------------------------
+Create Table to store user's login information
+#---------------------------------------------------------------------------------------------------------------
+create database user_info;
+
+create table user_info.user_login(user_id int(10) not null, 
+                                    username varchar(45) primary key not null,
+                                    Full_name varchar(45) not null,
+                                    user_pass varchar(45) not null,
+                                    email varchar(30) not null,
+                                    security_qns varchar(45) not null,
+                                    security_qns_ans varchar(30) not null);
+
+alter table user_info.user_login modify user_id int(10) not null auto_increment unique;
+
+#---------------------------------------------------------------------------------------------------------------
+
+#---------------------------------------------------------------------------------------------------------------
