@@ -8,6 +8,7 @@ create table user_info.user_login(user_id int(10) not null,
                                     Full_name varchar(45) not null,
                                     user_pass varchar(45) not null,
                                     email varchar(30) not null,
+                                    contact int(12) not null,
                                     security_qns varchar(45) not null,
                                     security_qns_ans varchar(30) not null);
 
