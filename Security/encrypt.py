@@ -41,8 +41,8 @@ class encryption:
 """
 #Driver Code
 #Provided by User
-message = "#my deep d@rk secrets!!"
-key = "sahil"
+message = ""
+key = ""
 e = encryption(key, message)
 print("Encrypted: ", e.encrypted.decode())
 print("Decrypted: ",e.decode(e.obj, e.encrypted).decode())
