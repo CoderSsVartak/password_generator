@@ -3,7 +3,7 @@ import re
 
 #Database: user_info: Stores tables related to user information
                 #Table: user_login: stores login information
-                    # (user_id int unique auto increement, username varchar primary key unique, Full_name varchar not null, user_pass varchar not null, email varchar not null, security_qns varchar not null, security_qns_ans varchar not null)
+                    # (user_id int unique auto increement, username varchar primary key unique, Full_name varchar not null, user_pass varchar not null, email varchar not null, contact int(12) not null, security_qns varchar not null, security_qns_ans varchar not null)
 
 
 #Login information given by the user which has to be first validated for any noise and then checked if present in db
@@ -54,12 +54,13 @@ class Login:
 #-----------------------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------------------
 class Register:
-    def __init__(self, d, username, Full_name, user_pass, email, security_qns, security_qns_ans):
+    def __init__(self, d, username, Full_name, user_pass, email, contact, security_qns, security_qns_ans):
 
         self.username = username
         self.Full_name = Full_name
         self.user_pass = user_pass
         self.email = email
+        self.contact = contact
         self.security_qns = security_qns
         self.security_qns_ans = security_qns_ans
         self.flag = all([self.text_validate(self.username), self.text_validate(self.Full_name), self.text_validate(self.user_pass),self.text_validate(self.security_qns_ans)])
@@ -78,7 +79,7 @@ class Register:
 
         if self.flag:
 
-            query = "INSERT INTO `user_info`.`user_login` (`username`, `Full_name`, `user_pass`, `security_qns`, `security_qns_ans`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}');".format(self.username, self.Full_name, self.user_pass, self.email, self.security_qns, self.security_qns_ans)
+            query = "INSERT INTO `user_info`.`user_login` (`username`, `Full_name`, `user_pass`, `email`, `contact`, `security_qns`, `security_qns_ans`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}');".format(self.username, self.Full_name, self.user_pass, self.email, self.contact, self.security_qns, self.security_qns_ans)
             result = d.execute(query)
             return result
 
@@ -91,14 +92,14 @@ class Register:
 #-----------------------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------------------
 #DB variables
-localhost, username, dbpassword, port = "localhost", "root", "vartak@213", 3306
+localhost, username, dbpassword, port = "localhost", "root", "", 3306
 d = Database(localhost, username, dbpassword, port)
 
 #-----------------------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------------------
 #Driver Code for Register
 """
-username, Full_name, password, security_qns, security_qns_ans = "Srushti", "srushti", "im_srm@2403", "Hello?", "c"
+username, Full_name, password, security_qns, security_qns_ans = "", "", "", "", ""
 r = Register(d, username, Full_name, password, security_qns, security_qns_ans)
 print(r.insert_done)
 """
@@ -106,8 +107,8 @@ print(r.insert_done)
 #-----------------------------------------------------------------------------------------------------------------------------------
 #Driver Code for Login
 """
-user = "Srushti"
-password = "im_srm@2403"
+user = ""
+password = ""
 l = Login(user, password, d)
 print(l.login)
 """
