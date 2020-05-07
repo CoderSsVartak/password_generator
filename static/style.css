@@ -86,8 +86,19 @@ ul li a:hover{
 	margin: 3% auto;
 	background: linear-gradient(to right, #f7f7f5, #b3b3b1); 
 	padding: 2% 2% 5% 5%;
-	overflow:hidden;
+	overflow:scroll;
 }
+.dropbtn{
+	background-color:linear-gradient(to right, #f7f7f5, #b3b3b1);
+	color: blue;
+	padding: 10px 230px 10px 10px;
+	font-size: 16px;
+	border: none;
+	margin-top:7%;
+	
+}
+  
+
 .form-box h1{
 	float: left;
 	font-size: 40px;
@@ -96,6 +107,7 @@ ul li a:hover{
 	padding: 13px 0;
 	color:blue;
 }
+
 .form-box1{
 	height:280px;
 	width: 400px;
@@ -157,6 +169,7 @@ ul li a:hover{
 }
 .textbox input::placeholder{
 	color:blue;
+	opacity:0.3;
 }
 .btn1{
 	width: 80%;
