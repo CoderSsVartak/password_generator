@@ -13,7 +13,7 @@ create table user_info.user_login(user_id int(10) not null,
                                     Full_name varchar(45) not null,
                                     user_pass varchar(45) not null,
                                     email varchar(30) not null,
-                                    contact int(12) not null,
+                                    contact varchar(12) not null,
                                     security_qns varchar(45) not null,
                                     security_qns_ans varchar(30) not null);
 
@@ -31,5 +31,6 @@ create table active_sessions(session_id int(30) primary key not null,
 alter table active_sessions modify session_id int(30) not null auto_increment;
 
 #---------------------------------------------------------------------------------------------------------------
-
+Create a different database for storing passwords
 #---------------------------------------------------------------------------------------------------------------
+create database my_space;
