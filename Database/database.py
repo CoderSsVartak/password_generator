@@ -2,10 +2,10 @@ import mysql.connector as mysql
 
 class Database:
 
-    def __init__(self, localhost, username, dbpassword, port):
+    def __init__(self):
 
         self.hostname="localhost"
-        self.username="root"
+        self.username="root"    
         self.dbpasswd="vartak@213"
         self.port="3306"
         
@@ -31,12 +31,15 @@ class Database:
         try:
             cursor = db.cursor()
             cursor.execute(query)
-            self.close(db)            
-            del(cursor)
             db.commit()
+            del(cursor)
             return True 
 
         except mysql.errors.IntegrityError:
+            return False
+        except mysql.errors.OperationalError:
+            return False
+        except mysql.errors.ProgrammingError:
             return False
     
     #Execute the fetch operatios from database asked by the user
@@ -46,6 +49,16 @@ class Database:
         cursor = db.cursor()
         cursor.execute(query)
         data = cursor.fetchone()
+        self.close(db)
+        del(cursor)
+        return(data)
+
+    def fetch_multiple(self, query):
+
+        db = self.connect()
+        cursor = db.cursor()
+        cursor.execute(query)
+        data = cursor.fetchall()
         self.close(db)
         del(cursor)
         return(data)
