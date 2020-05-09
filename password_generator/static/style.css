@@ -107,9 +107,11 @@ ul li a:hover{
 	padding: 13px 0;
 	color:blue;
 }
-
+.error{
+	color:red;
+}
 .form-box1{
-	height:280px;
+	height:320px;
 	width: 400px;
 	position:absolute;
 	top: 30%;

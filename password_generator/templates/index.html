@@ -2,14 +2,11 @@
 <html>
 <head>
 	<title>PASSWORD GENERATOR</title>
-	<link rel="stylesheet" type="text/css" href="style.css"></link>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"></link>
 </head>
 <body>
 	<header>
 		<div class="main">
-			<!-- <div class="logo">
-				<img src="{{url_for('static', filename='logo_1.png')}}">
-			</div> -->
 			<ul>
 				<li><a href="#">CONTACT US</a></li>
 				
@@ -19,8 +16,8 @@
 			<h1>PASSWORD GENERATOR</h1>
 		</div>
 		<div class="button">
-			<a href="register.html" class="btn">REGISTER</a>
-			<a href="login.html" class="btn">LOG IN</a>
+			<a href="{{url_for('register')}}" class="btn">REGISTER</a>
+			<a href="{{url_for('login')}}" class="btn">LOG IN</a>
 		</div>
 	</header>
 </body>

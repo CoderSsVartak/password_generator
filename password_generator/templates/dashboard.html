@@ -2,21 +2,22 @@
 <html>
 <head>
 	<title>PASSWORD GENERATOR</title>
-	<link rel="stylesheet" type="text/css" href="style.css"></link>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"></link>
 </head>
 <body>
 	<header>
 		<div class="main">
 			<ul>
-				<li><a href="homepage.html">HOME</a></li>
-				<li><a href="#">CONTACT US</a></li>
+				<li><a href="{{url_for('logout')}}">Logout</a></li>
 			</ul>
 		</div>
 		<div class="title2">
 			<h1>PASSWORD GENERATOR</h1>
 		</div>
-		<div class="page-title"><h1>Your Dashboard</h1></div>
-	</header>
+		{% if current_user.is_authenticated%}
+			<div class="page-title"><h1>Your Dashboard: {{ current_user.username }}</h1></div>
+		{% endif %}
+		</header>
 	<div class="container">
 		
 		<div class="form-box2">
