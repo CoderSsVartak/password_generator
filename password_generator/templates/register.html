@@ -2,17 +2,14 @@
 <html>
 <head>
 	<title>PASSWORD GENERATOR</title>
-	<link rel="stylesheet" type="text/css" href="style.css"></link>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"></link>
 
 </head>
 <body>
 	<header>
 		<div class="main">
-			<!-- <div class="logo">
-				<img src="{{url_for('static', filename='logo_1.png')}}">
-			</div> -->
 			<ul>
-				<li><a href="homepage.html">HOME</a></li>
+				<li><a href="{{url_for('index')}}">HOME</a></li>
 				<li><a href="#">CONTACT US</a></li>
 			</ul>
 		</div>
@@ -20,35 +17,100 @@
 			<h1>PASSWORD GENERATOR</h1>
 		</div>
 		<div class="hero">
-			<div class="form-box">
+			<form method='post' action="" class='form-box'>
 				<h1>Register</h1>
+
 				<div class="textbox">	
-					<input type="text" name="fname_ip" class="input-field" placeholder=" Full Name" required>
+					<input type="text" name="fname_ip" placeholder=" Full Name" required>
 				</div>
-				<div class="textbox">	
-					<input type="text" name="phn_ip" class="input-field" placeholder=" Contact Number" required>
-				</div>
-				<div class="textbox">	
-					<input type="text" name="email_ip" class="input-field" placeholder=" Email ID" required>
-				</div>
-				<div class="textbox">	
-					<input type="text" name="user_ip" class="input-field" placeholder=" User Name" required>
-				</div>
-				<div class="textbox">	
-					<input type="text" name="password_ip" class="input-field" placeholder=" Password" required>
-				</div>
-				<div class="textbox">	
-					<input type="text" name="repassword_ip" class="input-field" placeholder=" Re-Enter Password" required>
-				</div>
-				<div class="textbox">
-					<input type="text" name="security_qns" class="input-field" value="Question1" disabled>
-				</div>
-				<div class="textbox">
-					<input type="text" name="security_qns_and" class="input-field" placeholder="Enter answer for the above question">
-				</div>
-				<input  class="btn1" type="submit" name="" value="Register" href="#">
+				{%if form.fullname.errors %}
+					<div class='error'>
+						{% for error in form.fullname.error %}
+							<small class='danger'>{{ eror }}</small>
+						{% endfor %}
+					</div>
+				{% endif %}
 				
-			</div>
+				
+				<div class="textbox">	
+					<input type="text" name="phn_ip"  placeholder=" Contact Number" required>
+				</div>
+				{%if form.contact.errors %}
+					<div class='error'>
+						{% for error in form.contact.error %}
+							<small class='danger'>{{ error }}</small>
+						{% endfor %}
+					</div>
+				{% endif %}
+				
+				
+				<div class="textbox">	
+					<input type="email" name="email_ip"  placeholder=" Email ID" required>
+				</div>
+				{%if form.email.errors %}
+					<div class='error'>
+						{% for error in form.email.errors %}
+							<small class='danger'>{{ error }}</small>
+						{% endfor %}
+					</div>
+				{% endif %}
+				
+				
+				
+				<div class="textbox">	
+					<input type="text" name="user_ip"  placeholder=" User Name" required>
+				</div>
+				{%if form.username.errors %}
+					<div class='error'>
+						{% for error in form.username.errors %}
+							<small class='danger'>{{ error }}</small>
+						{% endfor %}
+					</div>
+				{% endif %}
+				
+				
+				
+				<div class="textbox">	
+					<input type="password" name="password_ip"  placeholder=" Password" required>
+				</div>
+				{%if form.email.errors %}
+					<div class='error'>
+						{% for error in form.email.errors %}
+							<small class='danger'>{{ error }}</small>
+						{% endfor %}
+					</div>
+				{% endif %}
+				
+				
+				
+				<div class="textbox">	
+					<input type="password" name="repassword_ip"  placeholder=" Re-Enter Password" required>
+				</div>
+				{%if form.confirm_password.errors %}
+					<div class='error'>
+						{% for error in form.confirm_password.errors %}
+							<small class='danger'>{{ error }}</small>
+						{% endfor %}
+					</div>
+				{% endif %}
+				
+				
+				<div class="textbox">
+					<input type="text" name="security_qns"  value="{{sec_qns}}" required>
+				</div>
+				<div class="textbox">
+					<input type="text" name="security_qns_ans"  placeholder="Enter answer for the above question">
+				</div>
+				{%if form.sec_ans.errors %}
+					<div class='error'>
+						{% for error in form.sec_ans.errors %}
+							<small class='danger'>{{ error }}</small>
+						{% endfor %}
+					</div>
+				{% endif %}
+					
+				<input  class="btn1" type="submit" name="Sign Up" value="Register">
+			</form>
 		</div>
 	</header>
 </body>
