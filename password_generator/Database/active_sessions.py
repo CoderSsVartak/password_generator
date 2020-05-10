@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from database import Database
+from password_generator.Database.database import Database
 
 class Active_Sessions:
 
@@ -10,7 +10,8 @@ class Active_Sessions:
     def create_session(self, username):
 
         flag = self.verify_user(username)
-        
+
+        print("Flag:", flag, username)
         #If user is not present in the active sessions already only then add the new user.
         if not flag:
             query = "INSERT INTO `user_info`.`active_sessions` (username) VALUES ('{}');".format(username)
@@ -18,6 +19,7 @@ class Active_Sessions:
             db = d.connect()    
             result = d.execute(query)
             d.close(db)
+            print("Result: ", result)
             return(result)
 
         else:
@@ -108,15 +110,15 @@ class Active_Sessions:
 
         return result
 
-
-#Driver Code
 """
+#Driver Code
+
 a = Active_Sessions()
 username = ""
 OTP = ""
 
-#(a.create_session(username)
-#a.add_otp(username, OTP)
-a.verify_otp(username, OTP)
-print(a.end_session(username))
+print(a.create_session(username))
+a.add_otp(username,OTP)
+a.verify_otp(username, otp)
+a.end_session(username)
 """
