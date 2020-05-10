@@ -3,7 +3,7 @@
 <head>
 	<title>PASSWORD GENERATOR</title>
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"></link>
-
+	
 </head>
 <body>
 	<header>
@@ -19,7 +19,7 @@
 		<div class="hero">
 			<form method='post' action="" class='form-box'>
 				<h1>Register</h1>
-
+				{{ form.hidden_tag() }}
 				<div class="textbox">	
 					<input type="text" name="fname_ip" placeholder=" Full Name" required>
 				</div>
@@ -88,9 +88,7 @@
 				</div>
 				{%if form.confirm_password.errors %}
 					<div class='error'>
-						{% for error in form.confirm_password.errors %}
-							<small class='danger'>{{ error }}</small>
-						{% endfor %}
+						<small class='danger'>{{ error }}</small>
 					</div>
 				{% endif %}
 				
@@ -99,7 +97,7 @@
 					<input type="text" name="security_qns"  value="{{sec_qns}}" required>
 				</div>
 				<div class="textbox">
-					<input type="text" name="security_qns_ans"  placeholder="Enter answer for the above question">
+					<input type="text" name="security_qns_ans" id='sec_qns' placeholder="Enter answer for the above question">
 				</div>
 				{%if form.sec_ans.errors %}
 					<div class='error'>
@@ -109,7 +107,13 @@
 					</div>
 				{% endif %}
 					
-				<input  class="btn1" type="submit" name="Sign Up" value="Register">
+				<input  class="btn1" type="submit" name="Sign Up" value="Register" onclick="enable();">
+				<div>
+					<span>
+						<small>Already have an account?</small>
+						<a href="{{ url_for('login')}}">Log IN</a>
+					</span>
+				</div>
 			</form>
 		</div>
 	</header>

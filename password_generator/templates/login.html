@@ -35,8 +35,18 @@
 					</div>
 				{% endif %}
 
-				<input  class="btn1" type="submit" name="" value="Log In">
+				<input  class="btn1" type="submit" name="Log In" value="Log In">
+				<div class="success" style="color:green; font-size: 150%;">
+					<span>{{message}}</span>
+				</div>
+				<div>
+					<span>
+						<small>Don't have an account yet?</small>
+						<a href="{{ url_for('register')}}">Register Now</a>
+					</span>
+				</div>
 			</form>
+			
 		</div>
 	</header>
 </body>
