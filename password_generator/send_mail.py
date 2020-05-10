@@ -11,8 +11,8 @@ class Send_Mail:
         self.receiver = receiver
         self.reason = reason
         self.kwargs = kwargs
-        self.sender = "coderssvartak@gmail.com"
-        self.pswd = "Vartak@213"
+        self.sender = ""
+        self.pswd = ""
         self.sent = self.send()
 
     def send(self):
