@@ -8,7 +8,7 @@ from password_generator.models import User
 
 class LoginForm(FlaskForm):
 
-    username = StringField('username', validators=[DataRequired(), Length(min=5, max=30)])
+    username = StringField('username', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
     submit = SubmitField('Log In')
 
@@ -22,14 +22,13 @@ class LoginForm(FlaskForm):
             raise ValidationError("Username Not Found")
 
 
-
 class RegistrationForm(FlaskForm):
 
     fullname = StringField('fname_ip', validators=[DataRequired(), Length(min=2, max=120)])
-    contact = StringField('phn_ip', validators=[DataRequired(), Length(min=6, max=10)])
-    username = StringField('user_ip', validators=[DataRequired(), Length(min=2, max=120)])
+    contact = StringField('phn_ip', validators=[DataRequired(), Length(min=10, max=10)])
+    username = StringField('user_ip', validators=[DataRequired(), Length(min=4, max=120)])
     email = StringField('email_ip', validators=[DataRequired(), Email()])
-    password = PasswordField('password_ip', validators=[DataRequired()])
+    password = PasswordField('password_ip', validators=[DataRequired(), Length(min=5, max=100)])
     confirm_password = PasswordField('repassword_ip', validators=[DataRequired(), EqualTo('password')])
     sec_qns = StringField('security_qns', validators=[DataRequired()])
     sec_ans = StringField('security_qns_ans', validators=[DataRequired()])
@@ -49,4 +48,5 @@ class RegistrationForm(FlaskForm):
         if email:
             raise ValidationError("Email Already Exists. Please choose a valid Email Address")
 
+    
 
