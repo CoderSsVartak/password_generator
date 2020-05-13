@@ -127,6 +127,7 @@ ul li a:hover{
 	transition: 0.1s ease-in;
 	box-shadow: 5px 5px gray;
 }
+
 .form-box1 h1{
 	float: left;
 	font-size: 40px;
@@ -183,6 +184,12 @@ ul li a:hover{
 	cursor: pointer;
 	margin: 30px 0;
 }
+.btn1:hover{
+	background: linear-gradient(to right,  #d9d9d9, #adacac);
+	border:none;
+	transition: 0.1s ease-in;
+	box-shadow: 5px 5px gray;
+}
 .form-box2{
 	height:400px;
 	width: 1200px;
@@ -201,15 +208,22 @@ ul li a:hover{
 	align-items:center;
 }
 .form-box3{
-	height:600px;
+	height:400px;
 	width: 1200px;
 	position:absolute;
 	top: 20%;
 	left:5%;
+	/* border:2px solid #000; */
 	margin: 3% auto;
-	background: white; 
+	background: linear-gradient(to right,  #d9d9d9, #adacac);
 	padding: 10px;
+	display: -webkit-box;
+	display: flex;
+	-webkit-box-pack: center;
+	justify-content:center;
+	-webkit-box-align: center;
 	align-items:center;
+
 }
 .form-field1{
 	padding-left: 30px;
@@ -302,4 +316,50 @@ ul li a:hover{
 	position:absolute;
 	top: 18%;
 	left:5%;
+}
+
+.password-container{
+	position: absolute;
+	top:20%;
+	left:35%;
+}
+.password-container .pass-label{
+	font-size: 300%;
+	color:red;
+	font-weight: bold;
+	padding-left: 15%;
+}
+.password-container .pass-disp{
+	font:150%;
+	position: relative;
+
+	margin:10% 0% 5% 15%;
+	font-size:200%;
+}
+.password-container .save-password{
+	margin-left: 10%;
+}
+
+.password-container .pass-generate button, .password-container .save-password button{
+	position: relative;
+	width: 200px;
+	background: none;
+	border: 2px solid #999;
+	color: blue;
+	padding: 5%;
+	font-size: 150%;
+	cursor: pointer;
+	margin: 5% 10% 5% 5%;
+	margin-left: 10%;
+
+}
+.password-container .pass-generate button:hover, .password-container .save-password button:hover{
+	background: linear-gradient(to right,  #d9d9d9, #adacac);
+	border:none;
+	transition: 0.1s ease-in;
+	box-shadow: 5px 5px gray;
+}
+
+.action{
+	display: flex;
 }
