@@ -1,11 +1,14 @@
-from flask import redirect, render_template, url_for, flash, request
-from password_generator import app, db, db_session
+from flask import redirect, render_template, url_for, flash, request, jsonify
+from password_generator import app, db, db_session, space
 from password_generator.forms import LoginForm, RegistrationForm
 from flask_login import login_user, current_user, login_required, logout_user
 from password_generator.models import User
 from password_generator.Security.security_qns import Security_question
 from password_generator.forms import ValidationError
-
+from password_generator.Security.random_pass import Random_Password
+import random
+import json
+from urllib import parse
 
 @app.route("/")
 def index():
@@ -33,8 +36,8 @@ def login():
 
         if form.password.data == user.password:
             login_user(user)
-            print(db_session.create_session(user.username))
-            print("DOne")
+            db_session.create_session(user.username)
+            #print("DOne")
             return redirect(url_for('dashboard'))
 
         #If password does not match
@@ -57,8 +60,8 @@ def register():
     qns = s.read_qns()
 
     form = RegistrationForm()
-    print(form.validate_on_submit())
     if request.method == 'POST':
+
 
         #Get the data entered by the user
         form.username.data = request.form['user_ip']
@@ -95,6 +98,8 @@ def register():
         #Add user to database and send him to login page
         db.session.add(user)
         db.session.commit()
+        #Create user's space to store their passwords
+        space.create_space(user.username)
         return redirect(url_for('login'))
 
     
@@ -104,8 +109,87 @@ def register():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    print(current_user.username)
     return render_template('dashboard.html', username=current_user.username)
+
+
+@app.route('/generatepassword')
+@login_required
+def generatepassword():
+
+    return(render_template('generatepassword.html'))
+
+#send data to generatepassword page for new password without refresh 
+@app.route('/anotherpassword')
+@login_required
+def anotherpassword():
+
+    r = Random_Password(random.randint(8, 16))
+    return json.dumps(r.password)
+
+
+
+#Show the saved passwords
+@app.route('/savedpasswords')
+@login_required
+def savedpasswords():
+
+    passwords=space.show_passwords(current_user.username)
+    #print(passwords)
+    return(render_template('savedpasswords.html', passwords=passwords))
+
+
+#Save a password directly from the generate password page
+@app.route('/save', methods=['POST', 'GET'])
+@login_required
+def save():
+    
+    if request.method == 'POST':
+        account = request.form['account_name']
+        password = request.form['password']
+        result = space.add_password(current_user.username, account, password)
+        print(result)
+        if not result:
+            return jsonify({'error': "Username already present"})
+        return jsonify({'success': "Account added successfully"})
+
+@app.route('/delete', methods=['GET', 'POST'])
+@login_required
+def delete():
+
+    if request.method == 'POST':
+        account = request.form['AccountName']
+        result = space.delete_passwords(current_user.username, account)
+        print(result)
+        if not result:
+            return render_template('delete.html', account_error=True)
+        else:
+            return redirect(url_for('dashboard'))
+    return render_template('delete.html')
+
+
+@app.route('/storepasswords', methods=['GET', 'POST'])
+@login_required
+def storepasswords():
+
+    if request.method == 'POST':
+
+        account = request.form['AccountName']
+        password = request.form['password']
+        confirm_password = request.form['repassword']
+
+        if password == confirm_password:
+            result = space.add_password(current_user.username, account, password)
+            
+            #If account already exists
+            if not result:
+                return render_template('storepasswords.html', account_error=True)    
+        #If passwords do not match
+        else:
+            return render_template('storepasswords.html', password_error=True)
+        return(redirect(url_for('dashboard')))
+
+    return(render_template('storepasswords.html'))
+
 
 
 @app.route("/logout")
