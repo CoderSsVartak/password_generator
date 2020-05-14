@@ -208,7 +208,7 @@ ul li a:hover{
 	align-items:center;
 }
 .form-box3{
-	height:400px;
+	height:500px;
 	width: 1200px;
 	position:absolute;
 	top: 20%;
@@ -223,6 +223,7 @@ ul li a:hover{
 	justify-content:center;
 	-webkit-box-align: center;
 	align-items:center;
+	overflow:visible;
 
 }
 .form-field1{
@@ -362,4 +363,13 @@ ul li a:hover{
 
 .action{
 	display: flex;
+}
+.footbar{
+	position: absolute;
+	left:520px;
+	top: 420px;
+	display:flex;
+}
+.footbar button{
+	width:100px;
 }
