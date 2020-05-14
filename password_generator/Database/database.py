@@ -4,10 +4,10 @@ class Database:
 
     def __init__(self):
 
-        self.hostname="localhost"
-        self.username="root"    
-        self.dbpasswd="vartak@213"
-        self.port="3306"
+        self.hostname=""
+        self.username=""    
+        self.dbpasswd=""
+        self.port=""
         
     #Connect to the database and tackle all the errors raised
     def connect(self):
