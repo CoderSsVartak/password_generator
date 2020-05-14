@@ -6,9 +6,11 @@ from password_generator.models import User
 from password_generator.Security.security_qns import Security_question
 from password_generator.forms import ValidationError
 from password_generator.Security.random_pass import Random_Password
+from password_generator.Emails.send_mail import Send_Mail
 import random
 import json
-from urllib import parse
+
+temp = ''
 
 @app.route("/")
 def index():
@@ -32,11 +34,14 @@ def login():
             form.username.errors = "Invalid User"
             return render_template('login.html', form=form)
 
-        print(e.decode(user.password))
-
+        
         if form.password.data == e.decode(user.password).decode():
             login_user(user)
+            mail = Send_Mail(user.email, "otp")
             db_session.create_session(user.username)
+            if mail.sent:
+                db_session.add_otp(current_user.username, mail.extra)
+                return(redirect(url_for('otp')))
             return redirect(url_for('dashboard'))
 
         #If password does not match
@@ -71,7 +76,7 @@ def register():
         form.password.data = request.form['password_ip']
         form.confirm_password.data = request.form['repassword_ip']
         form.contact.data = request.form['phn_ip']
-        form.sec_qns.data = request.form['security_qns']
+        form.sec_qns.data = request.form['qns']
         form.sec_ans.data = request.form['security_qns_ans']
         
        
@@ -92,9 +97,6 @@ def register():
         except ValidationError:
             flag = False
             form.email.errors = ["Email Already Exists. Please choose a valid Email Address"]
-        #except TypeError:
-        #    flag = False
-        #    form.email.errors = ["Invalid Email Address"]
             
         #If contact info is invalid
         try:
@@ -116,6 +118,7 @@ def register():
         user = User(name=form.fullname.data, username=form.username.data, email=form.email.data,
                      contact=form.contact.data, password=e.encode(form.password.data), sec_qns=form.sec_qns.data, sec_ans=form.sec_ans.data)
 
+        mail = Send_Mail(user.email, "register", username=user.username)
 
         #Add user to database and send him to login page
         db.session.add(user)
@@ -223,3 +226,28 @@ def logout():
     db_session.end_session(current_user.username)
     logout_user()
     return redirect(url_for('index'))
+
+@app.route("/otp", methods=['GET', 'POST'])
+def otp():
+
+    otp_error = False
+    if request.method == 'GET':
+        user = current_user
+        print(user)
+        logout_user()
+    
+    elif request.method == 'POST':
+        otp = request.form['otp']
+        try:
+            result = db_session.verify_otp(current_user.username, otp)
+            if result:
+                return redirect(url_for('dashboard'))
+        except AttributeError:
+            otp_error = "OTP has expired"
+            db_session.end_session(current_user.username)            
+            logout_user()
+            return render_template('login.html', otp_error = otp_error)
+        except ArithmeticError:
+            otp_error = "Entered OTP was incorrect"
+
+    return render_template('otp.html', otp_error=otp_error)
