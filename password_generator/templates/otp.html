@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PASSWORD GENERATOR</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"></link>
+</head>
+<body>
+	<header>
+		<div class="title2">
+			<h1>PASSWORD GENERATOR</h1>
+		</div>
+		<div class="page-title"><h1>Save Your Passwords</h1></div>
+	</header>
+	<div class="container">
+		<div class="form-box2">
+			<form action="{{url_for('otp')}}" method='post'>
+				<div class="textbox">	
+					<input type="text" name="otp"  placeholder="Enter the OTP sent" required style="width:300px;">
+				</div>
+				{% if otp_error %}
+					<div class="error">
+						<small class='danger'>{{otp_error}}</small>
+					</div>
+				{% endif %}
+				<input  class="btn1" type="submit" name="Add" value="Submit OTP">
+			</form>
+		</div>
+	</div>
+</body>
+</html>
+	
