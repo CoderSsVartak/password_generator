@@ -37,7 +37,7 @@
 				</div>
 				{%if form.contact.errors %}
 					<div class='error'>
-						{% for error in form.contact.error %}
+						{% for error in form.contact.errors %}
 							<small class='danger'>{{ error }}</small>
 						{% endfor %}
 					</div>
@@ -71,11 +71,14 @@
 				
 				
 				<div class="textbox">	
-					<input type="password" name="password_ip"  placeholder=" Password" required>
+					<input type="password" class='pass' name="password_ip"  placeholder=" Password" required>
 				</div>
-				{%if form.email.errors %}
+				<div class='pass-error' style="display:none;">
+					<small class='danger'>Password Mismatch</small>
+				</div>
+				{%if form.password.errors %}
 					<div class='error'>
-						{% for error in form.email.errors %}
+						{% for error in form.password.errors %}
 							<small class='danger'>{{ error }}</small>
 						{% endfor %}
 					</div>
@@ -84,18 +87,21 @@
 				
 				
 				<div class="textbox">	
-					<input type="password" name="repassword_ip"  placeholder=" Re-Enter Password" required>
+					<input type="password" class='repass' name="repassword_ip"  placeholder=" Re-Enter Password" required>
 				</div>
 				{%if form.confirm_password.errors %}
 					<div class='error'>
-						<small class='danger'>{{ error }}</small>
+						{% for error in form.confirm_password.errors %}
+							<small class='danger'>{{ error }}</small>
+						{% endfor %}
 					</div>
 				{% endif %}
 				
 				
 				<div class="textbox">
-					<input type="text" name="security_qns"  value="{{sec_qns}}" required>
+					<input name='qns' class='security_qns'  style="width:350px;" value="{{sec_qns}}">
 				</div>
+				<button clas='button' id='change-qns' style="background: none; width:300px;">Change Security Question</button>
 				<div class="textbox">
 					<input type="text" name="security_qns_ans" id='sec_qns' placeholder="Enter answer for the above question">
 				</div>
@@ -107,7 +113,7 @@
 					</div>
 				{% endif %}
 					
-				<input  class="btn1" type="submit" name="Sign Up" value="Register" onclick="enable();">
+				<input  class="btn1" type="submit" name="Sign Up" value="Register">
 				<div>
 					<span>
 						<small>Already have an account?</small>
@@ -117,6 +123,45 @@
 			</form>
 		</div>
 	</header>
+	<script>
+		const sec_qns = document.querySelector('.security_qns').value;
+		console.log(sec_qns);
+
+		function password_match(){
+			const password = document.querySelector('.pass').value;
+			const repassword = document.querySelector('.repass').value;
+			console.log(password);
+			if (password != repassword){
+				document.querySelector('.pass-error').style.display = 'block';
+				document.querySelector('.pass').style.backgroundColor = 'red';
+				document.querySelector('.repass').style.backgroundColor = 'red';
+			}
+			else{
+				document.querySelector('.pass-error').style.display = 'none';
+				document.querySelector('.pass').style.background = 'none';
+				document.querySelector('.repass').style.background = 'none';
+			}
+		}
+		function qns(){
+			alert('Please do not change the contents of the field');
+			console.log(sec_qns);
+			document.querySelector('.security_qns').value = sec_qns;
+		}
+
+		async function change(){
+				const result = await fetch("{{url_for('change_qns')}}");
+				const new_qns = await result.json();
+				console.log(new_qns);
+				document.querySelector('.security_qns').value = new_qns;
+		}
+		
+
+
+
+		document.querySelector('#change-qns').addEventListener('click', change);
+		document.querySelector('.security_qns').addEventListener('input', qns);
+		document.querySelector('.repass').addEventListener('input', password_match);
+	</script>
 </body>
 </html>
 	
