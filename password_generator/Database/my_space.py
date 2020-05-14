@@ -1,4 +1,4 @@
-from database import Database
+from password_generator.Database.database import Database
 from datetime import date
 
 
@@ -10,34 +10,22 @@ class My_Space:
 
     def create_space(self, username):
         
-        #Verify is username is present in db or not
-        query = "select username from `user_info`.`user_login` where username='{}';".format(username)
-        db = self.d.connect()
-        result = self.d.fetch(query)
-        self.d.close(db)
-        flag = False
+        flag = True
 
-        #username not present in database
-        if type(result) == None:
-            flag = False
         
-        elif username in result:
-            flag = True
-
         if flag:
-            query = "create table `my_space`.`{}`(account_name varchar(45) primary key not null, user_pass varchar(45) not null, date varchar(45));".format(username)
+            query = "create table `my_space`.`{}`(account_name varchar(45) primary key not null, user_pass varchar(120) not null, date varchar(45));".format(username)
             db = self.d.connect()
             result = self.d.execute(query)
             self.d.close(db)
 
-        return result and flag
+        return flag
 
 
     def add_password(self, username, account_name, user_pass):
 
         #insert password into the database
-        query = "insert into `my_space`.`{}` values('{}', '{}', '{}');".format(username, account_name, user_pass, str(date.today()))
-
+        query = "insert into `my_space`.`{}` values('{}', '{}', '{}');".format(username, account_name, user_pass.decode(), str(date.today()))
         db = self.d.connect()
         result = self.d.execute(query)
         self.d.close(db)
