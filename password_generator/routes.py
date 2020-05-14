@@ -34,9 +34,9 @@ def login():
             form.username.errors = "Invalid User"
             return render_template('login.html', form=form)
 
-        
         if form.password.data == e.decode(user.password).decode():
             login_user(user)
+            print("Current User: ", current_user.username)
             mail = Send_Mail(user.email, "otp")
             db_session.create_session(user.username)
             if mail.sent:
@@ -231,12 +231,8 @@ def logout():
 def otp():
 
     otp_error = False
-    if request.method == 'GET':
-        user = current_user
-        print(user)
-        logout_user()
-    
-    elif request.method == 'POST':
+
+    if request.method == 'POST':
         otp = request.form['otp']
         try:
             result = db_session.verify_otp(current_user.username, otp)
