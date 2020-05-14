@@ -129,6 +129,13 @@ def register():
     
     return render_template('register.html', form=form, sec_qns=qns)
 
+#Dynamically check if username is present or not
+@app.route('/user_check', methods=['POST'])
+def user_check():
+
+    user = User.query.filter_by(username=request.form['username']).all()
+    return json.dumps(bool(user))
+
 #Change the security question
 @app.route('/change_qns')
 def change_qns():
