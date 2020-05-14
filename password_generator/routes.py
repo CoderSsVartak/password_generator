@@ -10,7 +10,7 @@ from password_generator.Emails.send_mail import Send_Mail
 import random
 import json
 
-temp = ''
+
 
 @app.route("/")
 def index():
@@ -36,7 +36,6 @@ def login():
 
         if form.password.data == e.decode(user.password).decode():
             login_user(user)
-            print("Current User: ", current_user.username)
             mail = Send_Mail(user.email, "otp")
             db_session.create_session(user.username)
             if mail.sent:
@@ -130,6 +129,13 @@ def register():
     
     return render_template('register.html', form=form, sec_qns=qns)
 
+#Change the security question
+@app.route('/change_qns')
+def change_qns():
+    s = Security_question()
+    qns = s.read_qns()
+    return json.dumps(qns)
+
 
 @app.route("/dashboard")
 @login_required
@@ -215,7 +221,6 @@ def prev():
         end = len(psswd)
     elif start > len(psswd):
         return json.dumps('null')
-    print(psswd[start:end])
     if start<len(psswd) and end <= len(psswd):
         return jsonify(psswd[start:end])
 
@@ -292,10 +297,11 @@ def otp():
                 return redirect(url_for('dashboard'))
         except AttributeError:
             otp_error = "OTP has expired"
-            db_session.end_session(current_user.username)            
-            logout_user()
+            db_session.end_session(current_user.username)   
+            logout_user()         
             return render_template('login.html', otp_error = otp_error)
+        
         except ArithmeticError:
             otp_error = "Entered OTP was incorrect"
-
+    
     return render_template('otp.html', otp_error=otp_error)
