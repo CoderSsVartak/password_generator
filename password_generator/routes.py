@@ -1,5 +1,5 @@
 from flask import redirect, render_template, url_for, flash, request, jsonify
-from password_generator import app, db, db_session, space
+from password_generator import app, db, db_session, space, e
 from password_generator.forms import LoginForm, RegistrationForm
 from flask_login import login_user, current_user, login_required, logout_user
 from password_generator.models import User
@@ -26,18 +26,17 @@ def login():
     #When form is submitted
     if request.method == 'POST':
         user = User.query.filter_by(username=form.username.data).first()
-        #print("User: ",user.username, user.password)
-        #print("Password", form.password.data, form.username.data)
         
         #If user is not found
         if user == None:
             form.username.errors = "Invalid User"
             return render_template('login.html', form=form)
 
-        if form.password.data == user.password:
+        print(e.decode(user.password))
+
+        if form.password.data == e.decode(user.password).decode():
             login_user(user)
             db_session.create_session(user.username)
-            #print("DOne")
             return redirect(url_for('dashboard'))
 
         #If password does not match
@@ -58,43 +57,66 @@ def register():
     #Security qns taken out from the list of security questions
     s = Security_question()
     qns = s.read_qns()
-
     form = RegistrationForm()
+    
     if request.method == 'POST':
 
+        #If any errors are present then set the value of flag to false
+        flag = True
 
         #Get the data entered by the user
         form.username.data = request.form['user_ip']
         form.email.data = request.form['email_ip']
         form.fullname.data = request.form['fname_ip']
         form.password.data = request.form['password_ip']
-        #form.confirm_password.data = request.form['repassword_ip']
+        form.confirm_password.data = request.form['repassword_ip']
         form.contact.data = request.form['phn_ip']
         form.sec_qns.data = request.form['security_qns']
         form.sec_ans.data = request.form['security_qns_ans']
-
-        #Encrypt password before adding to the database
-
-        #Create object for user
-        user = User(name=form.fullname.data, username=form.username.data, email=form.email.data,
-                     contact=form.contact.data, password=form.password.data, sec_qns=form.sec_qns.data, sec_ans=form.sec_ans.data)
         
        
         #If the username is already taken     
         try:
             form.validate_username(form.username)
+            
         except ValidationError:
             form.username.errors = ["Username already taken"]
-            return render_template('register.html', form=form, sec_qns=qns)
+            flag = False
+        except TypeError:
+            form.username.errors = ["Username too long"]
+            flag = False
 
         #if the email is already registered
         try:
             form.validate_email(form.email)
         except ValidationError:
-            form.username.errors = ["Email Already Exists. Please choose a valid Email Address"]
+            flag = False
+            form.email.errors = ["Email Already Exists. Please choose a valid Email Address"]
+        #except TypeError:
+        #    flag = False
+        #    form.email.errors = ["Invalid Email Address"]
+            
+        #If contact info is invalid
+        try:
+            form.validate_contact(form.contact)
+        except ValidationError:
+            flag = False
+            form.contact.errors = ["Invalid Contact Information"]
+
+        if not form.match_passwords(form.password, form.confirm_password):
+            flag = False
+            form.confirm_password.errors = ["Password Mismatch"]
+
+        #If any errors are present
+        if not flag:
             return render_template('register.html', form=form, sec_qns=qns)
 
         #If all checks are successfull
+        #Create object for user
+        user = User(name=form.fullname.data, username=form.username.data, email=form.email.data,
+                     contact=form.contact.data, password=e.encode(form.password.data), sec_qns=form.sec_qns.data, sec_ans=form.sec_ans.data)
+
+
         #Add user to database and send him to login page
         db.session.add(user)
         db.session.commit()
@@ -134,8 +156,14 @@ def anotherpassword():
 def savedpasswords():
 
     passwords=space.show_passwords(current_user.username)
-    #print(passwords)
-    return(render_template('savedpasswords.html', passwords=passwords))
+    psswd = []
+    for password in passwords:
+        #Convert the encrypted password
+        temp = e.decode(password[1].encode()).decode()
+
+        psswd.append([password[0], temp, password[2]])
+
+    return(render_template('savedpasswords.html', passwords=psswd))
 
 
 #Save a password directly from the generate password page
@@ -146,8 +174,7 @@ def save():
     if request.method == 'POST':
         account = request.form['account_name']
         password = request.form['password']
-        result = space.add_password(current_user.username, account, password)
-        print(result)
+        result = space.add_password(current_user.username, account, e.encode(password))
         if not result:
             return jsonify({'error': "Username already present"})
         return jsonify({'success': "Account added successfully"})
@@ -159,7 +186,6 @@ def delete():
     if request.method == 'POST':
         account = request.form['AccountName']
         result = space.delete_passwords(current_user.username, account)
-        print(result)
         if not result:
             return render_template('delete.html', account_error=True)
         else:
@@ -178,7 +204,7 @@ def storepasswords():
         confirm_password = request.form['repassword']
 
         if password == confirm_password:
-            result = space.add_password(current_user.username, account, password)
+            result = space.add_password(current_user.username, account, e.encode(password))
             
             #If account already exists
             if not result:
@@ -194,7 +220,6 @@ def storepasswords():
 
 @app.route("/logout")
 def logout():
-    print("Logged Out", current_user)
     db_session.end_session(current_user.username)
     logout_user()
     return redirect(url_for('index'))
