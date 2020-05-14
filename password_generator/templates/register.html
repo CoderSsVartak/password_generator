@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>PASSWORD GENERATOR</title>
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"></link>
 	
 </head>
@@ -58,7 +59,10 @@
 				
 				
 				<div class="textbox">	
-					<input type="text" name="user_ip"  placeholder=" User Name" required>
+					<input type="text" name="user_ip" class='user'  placeholder=" User Name" required>
+				</div>
+				<div id="user-error" clas="error" style="display:none;">
+					<small class='danger'>Username Taken</small>
 				</div>
 				{%if form.username.errors %}
 					<div class='error'>
@@ -73,7 +77,7 @@
 				<div class="textbox">	
 					<input type="password" class='pass' name="password_ip"  placeholder=" Password" required>
 				</div>
-				<div class='pass-error' style="display:none;">
+				<div id="pass-error" class="error" style="display:none;">
 					<small class='danger'>Password Mismatch</small>
 				</div>
 				{%if form.password.errors %}
@@ -125,39 +129,55 @@
 	</header>
 	<script>
 		const sec_qns = document.querySelector('.security_qns').value;
-		console.log(sec_qns);
-
+		
 		function password_match(){
 			const password = document.querySelector('.pass').value;
 			const repassword = document.querySelector('.repass').value;
-			console.log(password);
 			if (password != repassword){
-				document.querySelector('.pass-error').style.display = 'block';
+				document.querySelector('#pass-error').style.display = 'block';
 				document.querySelector('.pass').style.backgroundColor = 'red';
 				document.querySelector('.repass').style.backgroundColor = 'red';
 			}
 			else{
-				document.querySelector('.pass-error').style.display = 'none';
+				document.querySelector('#pass-error').style.display = 'none';
 				document.querySelector('.pass').style.background = 'none';
 				document.querySelector('.repass').style.background = 'none';
 			}
 		}
 		function qns(){
 			alert('Please do not change the contents of the field');
-			console.log(sec_qns);
 			document.querySelector('.security_qns').value = sec_qns;
 		}
 
 		async function change(){
 				const result = await fetch("{{url_for('change_qns')}}");
 				const new_qns = await result.json();
-				console.log(new_qns);
 				document.querySelector('.security_qns').value = new_qns;
+		}
+		function check_username(){
+			$.ajax({
+					data:{
+						'username': document.querySelector('.user').value,
+					},
+					type: 'post',
+					url: "{{url_for('user_check')}}"
+				})
+				.done(function(data){
+					
+					//Incoming data is string format
+					if (data == 'false'){
+						document.querySelector('#user-error').style.display = 'none';
+					}
+					else {
+						document.querySelector('#user-error').style.display = 'block';
+					}
+				});
+
 		}
 		
 
 
-
+		document.querySelector('.user').addEventListener('input', check_username);
 		document.querySelector('#change-qns').addEventListener('click', change);
 		document.querySelector('.security_qns').addEventListener('input', qns);
 		document.querySelector('.repass').addEventListener('input', password_match);
