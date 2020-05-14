@@ -165,8 +165,60 @@ def savedpasswords():
         temp = e.decode(password[1].encode()).decode()
 
         psswd.append([password[0], temp, password[2]])
+    
+    count = 3
+    if len(psswd) < 3:
+        count = len(psswd)
 
-    return(render_template('savedpasswords.html', passwords=psswd))
+    return(render_template('savedpasswords.html', passwords=psswd[:count]))
+
+#Move to next page on the show password app
+@app.route('/next', methods=['POST'])
+@login_required
+def next():
+
+    passwords=space.show_passwords(current_user.username)
+    psswd = []
+    for password in passwords:
+        #Convert the encrypted password
+        temp = e.decode(password[1].encode()).decode()
+
+        psswd.append([password[0], temp, password[2]])
+
+    page = int(request.form['page'])
+    start, end = 3*page, 3*(page+1)
+
+    if end > len(psswd):
+        end = len(psswd)
+    elif start > len(psswd):
+        return json.dumps('null')
+    if start<len(psswd) and end <= len(psswd):
+        return jsonify(psswd[start:end])
+
+#Move to previous page on the show password app
+@app.route('/prev', methods=['POST'])
+@login_required
+def prev():
+
+    passwords=space.show_passwords(current_user.username)
+    psswd = []
+    for password in passwords:
+        #Convert the encrypted password
+        temp = e.decode(password[1].encode()).decode()
+
+        psswd.append([password[0], temp, password[2]])
+
+    page = int(request.form['page'])-1
+    start, end = 3*(page-1), 3*(page)
+
+    if end > len(psswd):
+        end = len(psswd)
+    elif start > len(psswd):
+        return json.dumps('null')
+    print(psswd[start:end])
+    if start<len(psswd) and end <= len(psswd):
+        return jsonify(psswd[start:end])
+
 
 
 #Save a password directly from the generate password page
